@@ -73,13 +73,53 @@ def find_browser() -> str:
     raise SystemExit("Chrome or Edge not found; install one or add its path to BROWSERS.")
 
 
+def md_section(text: str, number: str) -> str:
+    """Return the '## <number>.' section of a Markdown text (up to the next '## ' heading or '---')."""
+    out, inside = [], False
+    for line in text.splitlines():
+        if line.startswith("## "):
+            if inside:
+                break
+            inside = line.startswith(f"## {number}.")
+            continue                      # the section heading itself is replaced by the including document
+        if inside and line.strip() == "---":
+            break
+        if inside:
+            out.append(line)
+    if not out:
+        raise ValueError(f"section {number} not found")
+    return "\n".join(out).strip()
+
+
+def demote(text: str, levels: int) -> str:
+    """Add `levels` '#' to every Markdown heading outside fenced code blocks."""
+    out, fence = [], False
+    for line in text.splitlines():
+        if line.startswith("```"):
+            fence = not fence
+        if not fence and re.match(r"^#{1,5} ", line):
+            line = "#" * levels + line
+        out.append(line)
+    return "\n".join(out)
+
+
 def expand_includes(md_text: str, base: Path) -> str:
-    """Replace lines '<!-- include: path -->' with the file content in a code block (path relative to the .md file)."""
+    """
+    Replace include directives (paths relative to the .md file):
+      <!-- include: file.sql -->               file content in a code block
+      <!-- include: file.md -->                Markdown content inline
+      <!-- include: file.md#4 demote=1 -->     only section '## 4.' of file.md, headings demoted one level
+    """
     def repl(m):
-        f = (base / m.group(1).strip()).resolve()
-        lang = "sql" if f.suffix == ".sql" else ""
-        return "```" + lang + "\n" + f.read_text(encoding="utf-8").rstrip() + "\n```"
-    return re.sub(r"^<!--\s*include:\s*(.+?)\s*-->\s*$", repl, md_text, flags=re.M)
+        f = (base / m.group(1)).resolve()
+        text = f.read_text(encoding="utf-8")
+        if f.suffix != ".md":
+            lang = "sql" if f.suffix == ".sql" else ""
+            return "```" + lang + "\n" + text.rstrip() + "\n```"
+        if m.group(2):
+            text = md_section(text, m.group(2))
+        return demote(text, int(m.group(3) or 0))
+    return re.sub(r"^<!--\s*include:\s*([^\s#]+)(?:#(\d+))?(?:\s+demote=(\d))?\s*-->\s*$", repl, md_text, flags=re.M)
 
 
 def to_html(md_text: str, title: str, base: Path | None = None) -> str:

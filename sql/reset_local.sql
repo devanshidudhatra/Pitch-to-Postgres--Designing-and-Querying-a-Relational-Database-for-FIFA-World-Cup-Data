@@ -1,5 +1,6 @@
 -- =============================================================================
 -- Pitch to Postgres: Designing and Querying a Relational Database for FIFA World Cup Data
+-- Data: Joshua C. Fjelstul, The Fjelstul World Cup Database, https://github.com/jfjelstul/worldcup, CC-BY-SA 4.0.
 -- LOCAL TEST DATABASE ONLY. Drops all project views and tables so that ddl.sql can be rerun cleanly.
 -- Never run this on the course server (src/apply_ddl.py refuses unless DB_HOST is local).
 -- =============================================================================

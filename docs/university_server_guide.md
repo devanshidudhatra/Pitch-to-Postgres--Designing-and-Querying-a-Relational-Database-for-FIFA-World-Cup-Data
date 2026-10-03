@@ -8,7 +8,7 @@
 
 Everything in this project was built and tested on a local PostgreSQL database. The same code runs on the course server (`10.100.71.21`). **The only thing you change is the `.env` file.** No code, SQL or notebook needs editing.
 
-> **Status of the files this guide uses.** Steps 1-6 work now (`sql/ddl.sql` from Milestone 2, `notebooks/03_load_data.ipynb` from Milestone 3). Steps 7-8 use files from later milestones: `notebooks/04_queries.ipynb` and `sql/queries.sql` (Milestone 4) and `sql/views.sql` (Milestone 5). This guide will be updated as each one is finished.
+> **Status.** All steps work now. The files are `sql/ddl.sql`, `notebooks/03_load_data.ipynb`, `sql/queries.sql`, `notebooks/04_queries.ipynb`, `sql/views.sql` and `notebooks/05_views.ipynb`.
 
 ---
 
@@ -154,15 +154,23 @@ If you use a schema and psql, run `SET search_path TO your_schema;` first. The n
 1. Open `notebooks/04_queries.ipynb` and choose **Kernel > Restart Kernel and Run All Cells**.
 2. Each query runs with `pd.read_sql_query` and shows `head(10)`.
 3. **Sanity checks** (results that must hold on any correctly loaded database):
-   - Q1: Brazil has 5 titles.
+   - Q01: Brazil has 5 titles.
    - Q10: Miroslav Klose is the top scorer with 16 goals.
-   - Q30 (integrity check) returns **no rows**.
+   - Q30: `mismatched_team_matches` is 0, and `goal_rows` = `goals_in_scores` = 2548.
+   - The validation table in section 9 shows 16 `match` and 2 `explained`, with no `MISMATCH`.
+4. **Alternative without opening Jupyter:** `python src/run_notebook.py notebooks/04_queries.ipynb` runs the notebook and writes `notebooks/04_queries.pdf`.
 
 You can also run single queries from `sql/queries.sql` in psql or pgAdmin. Every query has a comment above it explaining what it answers.
 
 ## Step 8: Create the views (Milestone 5)
 
-Run `sql/views.sql` in pgAdmin or psql, or run the views notebook, which executes it and shows `SELECT * FROM <view> LIMIT 10` for each view. Views store no data, so creating them is safe and quick.
+Use any one of these:
+
+- **The notebook (recommended):** open `notebooks/05_views.ipynb` and choose **Kernel > Restart Kernel and Run All Cells**. It creates the 7 views, shows `SELECT * ... LIMIT 10` for each, and checks that every view agrees with its Milestone 4 query (8/8 `True`).
+- **The script:** `python src/apply_ddl.py sql/views.sql`
+- **psql:** `psql -h 10.100.71.21 -p 5432 -U your_username -d your_database_name -f sql/views.sql`
+
+Views store no data, so creating them is safe and quick. `views.sql` only uses `CREATE OR REPLACE VIEW`, so running it twice is harmless.
 
 ## Step 9: Export for submission
 
