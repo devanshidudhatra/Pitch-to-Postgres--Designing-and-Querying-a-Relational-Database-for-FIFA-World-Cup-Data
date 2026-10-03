@@ -1,0 +1,80 @@
+erDiagram
+  QUALIFIED_TEAMS {
+    varchar tournament_id PK, FK
+    varchar team_id PK, FK
+    varchar performance
+  }
+  HOST_COUNTRIES {
+    varchar tournament_id PK, FK
+    varchar team_id PK, FK
+  }
+  TOURNAMENT_STANDINGS {
+    varchar tournament_id PK, FK
+    smallint position PK
+    varchar team_id FK
+  }
+  GROUP_STANDINGS {
+    varchar tournament_id PK, FK
+    smallint stage_number PK, FK
+    varchar group_name PK, FK
+    smallint position PK
+    varchar team_id FK
+    smallint wins
+    smallint draws
+    smallint losses
+    smallint goals_for
+    smallint goals_against
+    bool advanced
+  }
+  SQUADS {
+    varchar tournament_id PK, FK
+    varchar team_id PK, FK
+    varchar player_id PK, FK
+    smallint shirt_number  "nullable"
+    varchar position_code FK
+  }
+  MANAGER_APPOINTMENTS {
+    varchar tournament_id PK, FK
+    varchar team_id PK, FK
+    varchar manager_id PK, FK
+  }
+  REFEREE_APPOINTMENTS {
+    varchar tournament_id PK, FK
+    varchar referee_id PK, FK
+  }
+  TOURNAMENTS {
+    varchar tournament_id PK
+  }
+  TEAMS {
+    varchar team_id PK
+  }
+  PLAYERS {
+    varchar player_id PK
+  }
+  MANAGERS {
+    varchar manager_id PK
+  }
+  REFEREES {
+    varchar referee_id PK
+  }
+  GROUPS {
+    varchar tournament_id PK, FK
+    smallint stage_number PK, FK
+    varchar group_name PK
+  }
+  POSITIONS {
+    varchar position_code PK
+  }
+  GROUPS ||--|{ GROUP_STANDINGS : "tournament_id, stage_number, group_name"
+  QUALIFIED_TEAMS ||--o{ GROUP_STANDINGS : "tournament_id, team_id"
+  QUALIFIED_TEAMS ||--o| HOST_COUNTRIES : "tournament_id, team_id"
+  MANAGERS ||--|{ MANAGER_APPOINTMENTS : "manager_id"
+  QUALIFIED_TEAMS ||--|{ MANAGER_APPOINTMENTS : "tournament_id, team_id"
+  TEAMS ||--|{ QUALIFIED_TEAMS : "team_id"
+  TOURNAMENTS ||--|{ QUALIFIED_TEAMS : "tournament_id"
+  REFEREES ||--|{ REFEREE_APPOINTMENTS : "referee_id"
+  TOURNAMENTS ||--|{ REFEREE_APPOINTMENTS : "tournament_id"
+  PLAYERS ||--|{ SQUADS : "player_id"
+  POSITIONS ||--o{ SQUADS : "position_code"
+  QUALIFIED_TEAMS ||--|{ SQUADS : "tournament_id, team_id"
+  QUALIFIED_TEAMS ||--o| TOURNAMENT_STANDINGS : "tournament_id, team_id"

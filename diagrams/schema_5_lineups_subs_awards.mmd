@@ -1,0 +1,54 @@
+erDiagram
+  PLAYER_APPEARANCES {
+    varchar match_id PK, FK
+    varchar player_id PK, FK
+    varchar tournament_id FK
+    varchar team_id FK
+    varchar position_code FK
+    bool starter
+    bool captain
+  }
+  SUBSTITUTIONS {
+    varchar substitution_id PK
+    varchar match_id FK
+    varchar tournament_id FK
+    varchar team_id FK
+    varchar player_id FK
+    smallint minute_regulation
+    smallint minute_stoppage
+    bool coming_on
+  }
+  AWARD_WINNERS {
+    varchar tournament_id PK, FK
+    varchar award_id PK, FK
+    varchar player_id PK, FK
+    varchar team_id FK
+  }
+  MATCHES {
+    varchar match_id PK
+    varchar tournament_id FK
+  }
+  TEAM_APPEARANCES {
+    varchar match_id PK, FK
+    varchar team_id PK, FK
+  }
+  SQUADS {
+    varchar tournament_id PK, FK
+    varchar team_id PK, FK
+    varchar player_id PK, FK
+  }
+  POSITIONS {
+    varchar position_code PK
+  }
+  AWARDS {
+    varchar award_id PK
+  }
+  AWARDS ||--|{ AWARD_WINNERS : "award_id"
+  SQUADS ||--o{ AWARD_WINNERS : "tournament_id, team_id, player_id"
+  MATCHES ||--o{ PLAYER_APPEARANCES : "match_id, tournament_id"
+  POSITIONS ||--|{ PLAYER_APPEARANCES : "position_code"
+  SQUADS ||--o{ PLAYER_APPEARANCES : "tournament_id, team_id, player_id"
+  TEAM_APPEARANCES ||--o{ PLAYER_APPEARANCES : "match_id, team_id"
+  MATCHES ||--o{ SUBSTITUTIONS : "match_id, tournament_id"
+  SQUADS ||--o{ SUBSTITUTIONS : "tournament_id, team_id, player_id"
+  TEAM_APPEARANCES ||--o{ SUBSTITUTIONS : "match_id, team_id"

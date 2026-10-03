@@ -1,0 +1,80 @@
+erDiagram
+  MATCHES {
+    varchar match_id PK
+    varchar tournament_id FK
+    smallint stage_number FK
+    varchar group_name FK "nullable"
+    bool replayed
+    bool replay
+    date match_date
+    time match_time
+    varchar stadium_id FK
+    varchar home_team_id FK
+    varchar away_team_id FK
+    smallint home_team_score
+    smallint away_team_score
+    bool extra_time
+    bool penalty_shootout
+    smallint home_team_score_penalties  "nullable"
+    smallint away_team_score_penalties  "nullable"
+  }
+  TEAM_APPEARANCES {
+    varchar match_id PK, FK
+    varchar team_id PK, FK
+    varchar tournament_id FK
+    varchar opponent_id FK
+    bool home_team
+    smallint goals_for
+    smallint goals_against
+    smallint penalties_for  "nullable"
+    smallint penalties_against  "nullable"
+  }
+  REFEREE_APPEARANCES {
+    varchar match_id PK, FK
+    varchar tournament_id FK
+    varchar referee_id FK
+  }
+  MANAGER_APPEARANCES {
+    varchar match_id PK, FK
+    varchar team_id PK, FK
+    varchar manager_id PK, FK
+    varchar tournament_id FK
+  }
+  TOURNAMENT_STAGES {
+    varchar tournament_id PK, FK
+    smallint stage_number PK
+  }
+  GROUPS {
+    varchar tournament_id PK, FK
+    smallint stage_number PK, FK
+    varchar group_name PK
+  }
+  STADIUMS {
+    varchar stadium_id PK
+  }
+  QUALIFIED_TEAMS {
+    varchar tournament_id PK, FK
+    varchar team_id PK, FK
+  }
+  REFEREE_APPOINTMENTS {
+    varchar tournament_id PK, FK
+    varchar referee_id PK, FK
+  }
+  MANAGER_APPOINTMENTS {
+    varchar tournament_id PK, FK
+    varchar team_id PK, FK
+    varchar manager_id PK, FK
+  }
+  MANAGER_APPOINTMENTS ||--|{ MANAGER_APPEARANCES : "tournament_id, team_id, manager_id"
+  MATCHES ||--|{ MANAGER_APPEARANCES : "match_id, tournament_id"
+  TEAM_APPEARANCES ||--|{ MANAGER_APPEARANCES : "match_id, team_id"
+  GROUPS |o--o{ MATCHES : "tournament_id, stage_number, group_name"
+  QUALIFIED_TEAMS ||--o{ MATCHES : "tournament_id, away_team_id"
+  QUALIFIED_TEAMS ||--o{ MATCHES : "tournament_id, home_team_id"
+  STADIUMS ||--|{ MATCHES : "stadium_id"
+  TOURNAMENT_STAGES ||--|{ MATCHES : "tournament_id, stage_number"
+  MATCHES ||--|| REFEREE_APPEARANCES : "match_id, tournament_id"
+  REFEREE_APPOINTMENTS ||--|{ REFEREE_APPEARANCES : "tournament_id, referee_id"
+  MATCHES ||--|{ TEAM_APPEARANCES : "match_id, tournament_id"
+  QUALIFIED_TEAMS ||--|{ TEAM_APPEARANCES : "tournament_id, team_id"
+  TEAM_APPEARANCES ||--|| TEAM_APPEARANCES : "match_id, opponent_id"

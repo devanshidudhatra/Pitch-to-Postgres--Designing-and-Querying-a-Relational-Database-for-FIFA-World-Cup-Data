@@ -1,0 +1,56 @@
+erDiagram
+  GOALS {
+    varchar goal_id PK
+    varchar match_id FK
+    varchar tournament_id FK
+    varchar team_id FK
+    varchar player_id FK
+    varchar player_team_id FK
+    smallint minute_regulation
+    smallint minute_stoppage
+    bool own_goal
+    bool penalty
+  }
+  BOOKINGS {
+    varchar booking_id PK
+    varchar match_id FK
+    varchar tournament_id FK
+    varchar team_id FK
+    varchar player_id FK
+    smallint minute_regulation
+    smallint minute_stoppage
+    bool yellow_card
+    bool red_card
+    bool second_yellow_card
+  }
+  PENALTY_KICKS {
+    varchar penalty_kick_id PK
+    varchar match_id FK
+    varchar tournament_id FK
+    varchar team_id FK
+    varchar player_id FK
+    bool converted
+  }
+  MATCHES {
+    varchar match_id PK
+    varchar tournament_id FK
+  }
+  TEAM_APPEARANCES {
+    varchar match_id PK, FK
+    varchar team_id PK, FK
+  }
+  SQUADS {
+    varchar tournament_id PK, FK
+    varchar team_id PK, FK
+    varchar player_id PK, FK
+  }
+  MATCHES ||--o{ BOOKINGS : "match_id, tournament_id"
+  SQUADS ||--o{ BOOKINGS : "tournament_id, team_id, player_id"
+  TEAM_APPEARANCES ||--o{ BOOKINGS : "match_id, team_id"
+  MATCHES ||--o{ GOALS : "match_id, tournament_id"
+  SQUADS ||--o{ GOALS : "tournament_id, player_team_id, player_id"
+  TEAM_APPEARANCES ||--o{ GOALS : "match_id, player_team_id"
+  TEAM_APPEARANCES ||--o{ GOALS : "match_id, team_id"
+  MATCHES ||--o{ PENALTY_KICKS : "match_id, tournament_id"
+  SQUADS ||--o{ PENALTY_KICKS : "tournament_id, team_id, player_id"
+  TEAM_APPEARANCES ||--o{ PENALTY_KICKS : "match_id, team_id"

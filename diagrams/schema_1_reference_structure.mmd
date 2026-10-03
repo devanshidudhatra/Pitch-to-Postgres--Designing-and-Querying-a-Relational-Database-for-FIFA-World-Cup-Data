@@ -1,0 +1,85 @@
+erDiagram
+  TEAMS {
+    varchar team_id PK
+    varchar team_name UK
+    char team_code
+    varchar federation_name
+    varchar region_name
+    varchar confederation_id FK
+    varchar team_wikipedia_link  "nullable"
+    varchar federation_wikipedia_link  "nullable"
+  }
+  CONFEDERATIONS {
+    varchar confederation_id PK
+    varchar confederation_name UK
+    varchar confederation_code UK
+    varchar confederation_wikipedia_link  "nullable"
+  }
+  REFEREES {
+    varchar referee_id PK
+    varchar family_name
+    varchar given_name  "nullable"
+    varchar country_name
+    varchar confederation_id FK
+    varchar referee_wikipedia_link  "nullable"
+  }
+  TOURNAMENTS {
+    varchar tournament_id PK
+    varchar tournament_name UK
+    smallint year UK
+    date start_date
+    date end_date
+  }
+  TOURNAMENT_STAGES {
+    varchar tournament_id PK, FK
+    smallint stage_number PK
+    varchar stage_name
+    date start_date
+    date end_date
+    smallint count_teams
+    smallint count_scheduled
+    smallint count_playoffs
+    smallint count_walkovers
+  }
+  GROUPS {
+    varchar tournament_id PK, FK
+    smallint stage_number PK, FK
+    varchar group_name PK
+  }
+  PLAYERS {
+    varchar player_id PK
+    varchar family_name
+    varchar given_name  "nullable"
+    date birth_date  "nullable"
+    varchar player_wikipedia_link  "nullable"
+  }
+  MANAGERS {
+    varchar manager_id PK
+    varchar family_name
+    varchar given_name  "nullable"
+    varchar country_name
+    varchar manager_wikipedia_link  "nullable"
+  }
+  STADIUMS {
+    varchar stadium_id PK
+    varchar stadium_name
+    varchar city_name
+    varchar country_name
+    int stadium_capacity
+    varchar stadium_wikipedia_link  "nullable"
+    varchar city_wikipedia_link  "nullable"
+  }
+  AWARDS {
+    varchar award_id PK
+    varchar award_name UK
+    varchar award_description
+    smallint year_introduced
+  }
+  POSITIONS {
+    varchar position_code PK
+    varchar position_name UK
+  }
+  TOURNAMENT_STAGES ||--o{ GROUPS : "tournament_id, stage_number"
+  CONFEDERATIONS ||--|{ REFEREES : "confederation_id"
+  CONFEDERATIONS ||--|{ TEAMS : "confederation_id"
+  TOURNAMENTS ||--|{ TOURNAMENT_STAGES : "tournament_id"

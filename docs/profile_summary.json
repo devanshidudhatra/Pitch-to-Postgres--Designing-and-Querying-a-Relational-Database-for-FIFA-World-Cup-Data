@@ -1,0 +1,2247 @@
+{
+  "title": "Pitch to Postgres: Designing and Querying a Relational Database for FIFA World Cup Data",
+  "tables": {
+    "confederations": {
+      "rows": 6,
+      "pk": [
+        "confederation_id"
+      ],
+      "pk_unique": true
+    },
+    "teams": {
+      "rows": 84,
+      "pk": [
+        "team_id"
+      ],
+      "pk_unique": true
+    },
+    "players": {
+      "rows": 7907,
+      "pk": [
+        "player_id"
+      ],
+      "pk_unique": true
+    },
+    "managers": {
+      "rows": 357,
+      "pk": [
+        "manager_id"
+      ],
+      "pk_unique": true
+    },
+    "referees": {
+      "rows": 380,
+      "pk": [
+        "referee_id"
+      ],
+      "pk_unique": true
+    },
+    "stadiums": {
+      "rows": 185,
+      "pk": [
+        "stadium_id"
+      ],
+      "pk_unique": true
+    },
+    "awards": {
+      "rows": 8,
+      "pk": [
+        "award_id"
+      ],
+      "pk_unique": true
+    },
+    "tournaments": {
+      "rows": 21,
+      "pk": [
+        "tournament_id"
+      ],
+      "pk_unique": true
+    },
+    "tournament_stages": {
+      "rows": 107,
+      "pk": [
+        "tournament_id",
+        "stage_number"
+      ],
+      "pk_unique": true
+    },
+    "groups": {
+      "rows": 117,
+      "pk": [
+        "tournament_id",
+        "stage_number",
+        "group_name"
+      ],
+      "pk_unique": true
+    },
+    "group_standings": {
+      "rows": 458,
+      "pk": [
+        "tournament_id",
+        "stage_number",
+        "group_name",
+        "position"
+      ],
+      "pk_unique": true
+    },
+    "host_countries": {
+      "rows": 22,
+      "pk": [
+        "tournament_id",
+        "team_id"
+      ],
+      "pk_unique": true
+    },
+    "qualified_teams": {
+      "rows": 457,
+      "pk": [
+        "tournament_id",
+        "team_id"
+      ],
+      "pk_unique": true
+    },
+    "tournament_standings": {
+      "rows": 84,
+      "pk": [
+        "tournament_id",
+        "position"
+      ],
+      "pk_unique": true
+    },
+    "matches": {
+      "rows": 900,
+      "pk": [
+        "match_id"
+      ],
+      "pk_unique": true
+    },
+    "team_appearances": {
+      "rows": 1800,
+      "pk": [
+        "match_id",
+        "team_id"
+      ],
+      "pk_unique": true
+    },
+    "squads": {
+      "rows": 10142,
+      "pk": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "pk_unique": true
+    },
+    "player_appearances": {
+      "rows": 18623,
+      "pk": [
+        "match_id",
+        "player_id"
+      ],
+      "pk_unique": true
+    },
+    "goals": {
+      "rows": 2548,
+      "pk": [
+        "goal_id"
+      ],
+      "pk_unique": true
+    },
+    "bookings": {
+      "rows": 2466,
+      "pk": [
+        "booking_id"
+      ],
+      "pk_unique": true
+    },
+    "substitutions": {
+      "rows": 6464,
+      "pk": [
+        "substitution_id"
+      ],
+      "pk_unique": true
+    },
+    "penalty_kicks": {
+      "rows": 279,
+      "pk": [
+        "penalty_kick_id"
+      ],
+      "pk_unique": true
+    },
+    "manager_appointments": {
+      "rows": 469,
+      "pk": [
+        "tournament_id",
+        "team_id",
+        "manager_id"
+      ],
+      "pk_unique": true
+    },
+    "manager_appearances": {
+      "rows": 1842,
+      "pk": [
+        "match_id",
+        "team_id",
+        "manager_id"
+      ],
+      "pk_unique": true
+    },
+    "referee_appointments": {
+      "rows": 511,
+      "pk": [
+        "tournament_id",
+        "referee_id"
+      ],
+      "pk_unique": true
+    },
+    "referee_appearances": {
+      "rows": 900,
+      "pk": [
+        "match_id"
+      ],
+      "pk_unique": true
+    },
+    "award_winners": {
+      "rows": 132,
+      "pk": [
+        "tournament_id",
+        "award_id",
+        "player_id"
+      ],
+      "pk_unique": true
+    }
+  },
+  "foreign_keys": [
+    {
+      "child": "teams",
+      "cols": [
+        "confederation_id"
+      ],
+      "parent": "confederations",
+      "pcols": [
+        "confederation_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 39,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 6
+    },
+    {
+      "child": "referees",
+      "cols": [
+        "confederation_id"
+      ],
+      "parent": "confederations",
+      "pcols": [
+        "confederation_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 214,
+      "min_children_when_present": 3,
+      "parents_without_children": 0,
+      "parents_total": 6
+    },
+    {
+      "child": "tournament_stages",
+      "cols": [
+        "tournament_id"
+      ],
+      "parent": "tournaments",
+      "pcols": [
+        "tournament_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 6,
+      "min_children_when_present": 2,
+      "parents_without_children": 0,
+      "parents_total": 21
+    },
+    {
+      "child": "groups",
+      "cols": [
+        "tournament_id"
+      ],
+      "parent": "tournaments",
+      "pcols": [
+        "tournament_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 10,
+      "min_children_when_present": 4,
+      "parents_without_children": 2,
+      "parents_total": 21
+    },
+    {
+      "child": "groups",
+      "cols": [
+        "tournament_id",
+        "stage_number"
+      ],
+      "parent": "tournament_stages",
+      "pcols": [
+        "tournament_id",
+        "stage_number"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 8,
+      "min_children_when_present": 1,
+      "parents_without_children": 84,
+      "parents_total": 107
+    },
+    {
+      "child": "group_standings",
+      "cols": [
+        "tournament_id",
+        "stage_number",
+        "group_name"
+      ],
+      "parent": "groups",
+      "pcols": [
+        "tournament_id",
+        "stage_number",
+        "group_name"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 4,
+      "min_children_when_present": 2,
+      "parents_without_children": 0,
+      "parents_total": 117
+    },
+    {
+      "child": "group_standings",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 23,
+      "min_children_when_present": 1,
+      "parents_without_children": 2,
+      "parents_total": 84
+    },
+    {
+      "child": "group_standings",
+      "cols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "parent": "qualified_teams",
+      "pcols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 2,
+      "min_children_when_present": 1,
+      "parents_without_children": 31,
+      "parents_total": 457
+    },
+    {
+      "child": "host_countries",
+      "cols": [
+        "tournament_id"
+      ],
+      "parent": "tournaments",
+      "pcols": [
+        "tournament_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 2,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 21
+    },
+    {
+      "child": "host_countries",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 2,
+      "min_children_when_present": 1,
+      "parents_without_children": 66,
+      "parents_total": 84
+    },
+    {
+      "child": "host_countries",
+      "cols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "parent": "qualified_teams",
+      "pcols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 1,
+      "min_children_when_present": 1,
+      "parents_without_children": 435,
+      "parents_total": 457
+    },
+    {
+      "child": "qualified_teams",
+      "cols": [
+        "tournament_id"
+      ],
+      "parent": "tournaments",
+      "pcols": [
+        "tournament_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 32,
+      "min_children_when_present": 13,
+      "parents_without_children": 0,
+      "parents_total": 21
+    },
+    {
+      "child": "qualified_teams",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 21,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 84
+    },
+    {
+      "child": "tournament_standings",
+      "cols": [
+        "tournament_id"
+      ],
+      "parent": "tournaments",
+      "pcols": [
+        "tournament_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 4,
+      "min_children_when_present": 4,
+      "parents_without_children": 0,
+      "parents_total": 21
+    },
+    {
+      "child": "tournament_standings",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 11,
+      "min_children_when_present": 1,
+      "parents_without_children": 59,
+      "parents_total": 84
+    },
+    {
+      "child": "tournament_standings",
+      "cols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "parent": "qualified_teams",
+      "pcols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 1,
+      "min_children_when_present": 1,
+      "parents_without_children": 373,
+      "parents_total": 457
+    },
+    {
+      "child": "matches",
+      "cols": [
+        "tournament_id"
+      ],
+      "parent": "tournaments",
+      "pcols": [
+        "tournament_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 64,
+      "min_children_when_present": 17,
+      "parents_without_children": 0,
+      "parents_total": 21
+    },
+    {
+      "child": "matches",
+      "cols": [
+        "stadium_id"
+      ],
+      "parent": "stadiums",
+      "pcols": [
+        "stadium_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 19,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 185
+    },
+    {
+      "child": "matches",
+      "cols": [
+        "home_team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 83,
+      "min_children_when_present": 1,
+      "parents_without_children": 4,
+      "parents_total": 84
+    },
+    {
+      "child": "matches",
+      "cols": [
+        "away_team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 39,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 84
+    },
+    {
+      "child": "matches",
+      "cols": [
+        "tournament_id",
+        "stage_name"
+      ],
+      "parent": "tournament_stages",
+      "pcols": [
+        "tournament_id",
+        "stage_name"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 48,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 107
+    },
+    {
+      "child": "matches",
+      "cols": [
+        "tournament_id",
+        "home_team_id"
+      ],
+      "parent": "qualified_teams",
+      "pcols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 7,
+      "min_children_when_present": 1,
+      "parents_without_children": 59,
+      "parents_total": 457
+    },
+    {
+      "child": "matches",
+      "cols": [
+        "tournament_id",
+        "away_team_id"
+      ],
+      "parent": "qualified_teams",
+      "pcols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 7,
+      "min_children_when_present": 1,
+      "parents_without_children": 15,
+      "parents_total": 457
+    },
+    {
+      "child": "team_appearances",
+      "cols": [
+        "match_id"
+      ],
+      "parent": "matches",
+      "pcols": [
+        "match_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 2,
+      "min_children_when_present": 2,
+      "parents_without_children": 0,
+      "parents_total": 900
+    },
+    {
+      "child": "team_appearances",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 109,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 84
+    },
+    {
+      "child": "team_appearances",
+      "cols": [
+        "opponent_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 109,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 84
+    },
+    {
+      "child": "team_appearances",
+      "cols": [
+        "stadium_id"
+      ],
+      "parent": "stadiums",
+      "pcols": [
+        "stadium_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 38,
+      "min_children_when_present": 2,
+      "parents_without_children": 0,
+      "parents_total": 185
+    },
+    {
+      "child": "team_appearances",
+      "cols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "parent": "qualified_teams",
+      "pcols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 7,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 457
+    },
+    {
+      "child": "squads",
+      "cols": [
+        "player_id"
+      ],
+      "parent": "players",
+      "pcols": [
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 5,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 7907
+    },
+    {
+      "child": "squads",
+      "cols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "parent": "qualified_teams",
+      "pcols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 24,
+      "min_children_when_present": 15,
+      "parents_without_children": 0,
+      "parents_total": 457
+    },
+    {
+      "child": "player_appearances",
+      "cols": [
+        "match_id"
+      ],
+      "parent": "matches",
+      "pcols": [
+        "match_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 30,
+      "min_children_when_present": 22,
+      "parents_without_children": 200,
+      "parents_total": 900
+    },
+    {
+      "child": "player_appearances",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 1001,
+      "min_children_when_present": 36,
+      "parents_without_children": 3,
+      "parents_total": 84
+    },
+    {
+      "child": "player_appearances",
+      "cols": [
+        "player_id"
+      ],
+      "parent": "players",
+      "pcols": [
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 25,
+      "min_children_when_present": 1,
+      "parents_without_children": 3280,
+      "parents_total": 7907
+    },
+    {
+      "child": "player_appearances",
+      "cols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "parent": "squads",
+      "pcols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 7,
+      "min_children_when_present": 1,
+      "parents_without_children": 4112,
+      "parents_total": 10142
+    },
+    {
+      "child": "goals",
+      "cols": [
+        "match_id"
+      ],
+      "parent": "matches",
+      "pcols": [
+        "match_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 12,
+      "min_children_when_present": 1,
+      "parents_without_children": 71,
+      "parents_total": 900
+    },
+    {
+      "child": "goals",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 229,
+      "min_children_when_present": 1,
+      "parents_without_children": 5,
+      "parents_total": 84
+    },
+    {
+      "child": "goals",
+      "cols": [
+        "player_team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 230,
+      "min_children_when_present": 1,
+      "parents_without_children": 4,
+      "parents_total": 84
+    },
+    {
+      "child": "goals",
+      "cols": [
+        "player_id"
+      ],
+      "parent": "players",
+      "pcols": [
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 16,
+      "min_children_when_present": 1,
+      "parents_without_children": 6567,
+      "parents_total": 7907
+    },
+    {
+      "child": "goals",
+      "cols": [
+        "tournament_id",
+        "player_team_id",
+        "player_id"
+      ],
+      "parent": "squads",
+      "pcols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 13,
+      "min_children_when_present": 1,
+      "parents_without_children": 8572,
+      "parents_total": 10142
+    },
+    {
+      "child": "goals",
+      "cols": [
+        "match_id",
+        "team_id"
+      ],
+      "parent": "team_appearances",
+      "pcols": [
+        "match_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 10,
+      "min_children_when_present": 1,
+      "parents_without_children": 512,
+      "parents_total": 1800
+    },
+    {
+      "child": "bookings",
+      "cols": [
+        "match_id"
+      ],
+      "parent": "matches",
+      "pcols": [
+        "match_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 16,
+      "min_children_when_present": 1,
+      "parents_without_children": 260,
+      "parents_total": 900
+    },
+    {
+      "child": "bookings",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 123,
+      "min_children_when_present": 2,
+      "parents_without_children": 3,
+      "parents_total": 84
+    },
+    {
+      "child": "bookings",
+      "cols": [
+        "player_id"
+      ],
+      "parent": "players",
+      "pcols": [
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 7,
+      "min_children_when_present": 1,
+      "parents_without_children": 6235,
+      "parents_total": 7907
+    },
+    {
+      "child": "bookings",
+      "cols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "parent": "squads",
+      "pcols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 4,
+      "min_children_when_present": 1,
+      "parents_without_children": 8188,
+      "parents_total": 10142
+    },
+    {
+      "child": "substitutions",
+      "cols": [
+        "match_id"
+      ],
+      "parent": "matches",
+      "pcols": [
+        "match_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 16,
+      "min_children_when_present": 2,
+      "parents_without_children": 203,
+      "parents_total": 900
+    },
+    {
+      "child": "substitutions",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 308,
+      "min_children_when_present": 8,
+      "parents_without_children": 3,
+      "parents_total": 84
+    },
+    {
+      "child": "substitutions",
+      "cols": [
+        "player_id"
+      ],
+      "parent": "players",
+      "pcols": [
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 18,
+      "min_children_when_present": 1,
+      "parents_without_children": 4884,
+      "parents_total": 7907
+    },
+    {
+      "child": "substitutions",
+      "cols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "parent": "squads",
+      "pcols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 7,
+      "min_children_when_present": 1,
+      "parents_without_children": 6544,
+      "parents_total": 10142
+    },
+    {
+      "child": "penalty_kicks",
+      "cols": [
+        "match_id"
+      ],
+      "parent": "matches",
+      "pcols": [
+        "match_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 12,
+      "min_children_when_present": 7,
+      "parents_without_children": 870,
+      "parents_total": 900
+    },
+    {
+      "child": "penalty_kicks",
+      "cols": [
+        "team_id"
+      ],
+      "parent": "teams",
+      "pcols": [
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 22,
+      "min_children_when_present": 3,
+      "parents_without_children": 53,
+      "parents_total": 84
+    },
+    {
+      "child": "penalty_kicks",
+      "cols": [
+        "player_id"
+      ],
+      "parent": "players",
+      "pcols": [
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 3,
+      "min_children_when_present": 1,
+      "parents_without_children": 7660,
+      "parents_total": 7907
+    },
+    {
+      "child": "penalty_kicks",
+      "cols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "parent": "squads",
+      "pcols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 2,
+      "min_children_when_present": 1,
+      "parents_without_children": 9879,
+      "parents_total": 10142
+    },
+    {
+      "child": "manager_appointments",
+      "cols": [
+        "manager_id"
+      ],
+      "parent": "managers",
+      "pcols": [
+        "manager_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 6,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 357
+    },
+    {
+      "child": "manager_appointments",
+      "cols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "parent": "qualified_teams",
+      "pcols": [
+        "tournament_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 2,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 457
+    },
+    {
+      "child": "manager_appearances",
+      "cols": [
+        "match_id"
+      ],
+      "parent": "matches",
+      "pcols": [
+        "match_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 4,
+      "min_children_when_present": 2,
+      "parents_without_children": 0,
+      "parents_total": 900
+    },
+    {
+      "child": "manager_appearances",
+      "cols": [
+        "manager_id"
+      ],
+      "parent": "managers",
+      "pcols": [
+        "manager_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 25,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 357
+    },
+    {
+      "child": "manager_appearances",
+      "cols": [
+        "match_id",
+        "team_id"
+      ],
+      "parent": "team_appearances",
+      "pcols": [
+        "match_id",
+        "team_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 2,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 1800
+    },
+    {
+      "child": "manager_appearances",
+      "cols": [
+        "tournament_id",
+        "team_id",
+        "manager_id"
+      ],
+      "parent": "manager_appointments",
+      "pcols": [
+        "tournament_id",
+        "team_id",
+        "manager_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 7,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 469
+    },
+    {
+      "child": "referee_appointments",
+      "cols": [
+        "tournament_id"
+      ],
+      "parent": "tournaments",
+      "pcols": [
+        "tournament_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 41,
+      "min_children_when_present": 11,
+      "parents_without_children": 0,
+      "parents_total": 21
+    },
+    {
+      "child": "referee_appointments",
+      "cols": [
+        "referee_id"
+      ],
+      "parent": "referees",
+      "pcols": [
+        "referee_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 3,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 380
+    },
+    {
+      "child": "referee_appointments",
+      "cols": [
+        "confederation_id"
+      ],
+      "parent": "confederations",
+      "pcols": [
+        "confederation_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 295,
+      "min_children_when_present": 3,
+      "parents_without_children": 0,
+      "parents_total": 6
+    },
+    {
+      "child": "referee_appearances",
+      "cols": [
+        "match_id"
+      ],
+      "parent": "matches",
+      "pcols": [
+        "match_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 1,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 900
+    },
+    {
+      "child": "referee_appearances",
+      "cols": [
+        "referee_id"
+      ],
+      "parent": "referees",
+      "pcols": [
+        "referee_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 11,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 380
+    },
+    {
+      "child": "referee_appearances",
+      "cols": [
+        "tournament_id",
+        "referee_id"
+      ],
+      "parent": "referee_appointments",
+      "pcols": [
+        "tournament_id",
+        "referee_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 5,
+      "min_children_when_present": 1,
+      "parents_without_children": 0,
+      "parents_total": 511
+    },
+    {
+      "child": "referee_appearances",
+      "cols": [
+        "confederation_id"
+      ],
+      "parent": "confederations",
+      "pcols": [
+        "confederation_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 516,
+      "min_children_when_present": 3,
+      "parents_without_children": 0,
+      "parents_total": 6
+    },
+    {
+      "child": "award_winners",
+      "cols": [
+        "award_id"
+      ],
+      "parent": "awards",
+      "pcols": [
+        "award_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 30,
+      "min_children_when_present": 7,
+      "parents_without_children": 0,
+      "parents_total": 8
+    },
+    {
+      "child": "award_winners",
+      "cols": [
+        "player_id"
+      ],
+      "parent": "players",
+      "pcols": [
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 4,
+      "min_children_when_present": 1,
+      "parents_without_children": 7802,
+      "parents_total": 7907
+    },
+    {
+      "child": "award_winners",
+      "cols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "parent": "squads",
+      "pcols": [
+        "tournament_id",
+        "team_id",
+        "player_id"
+      ],
+      "orphans": 0,
+      "orphan_examples": [],
+      "max_children": 2,
+      "min_children_when_present": 1,
+      "parents_without_children": 10029,
+      "parents_total": 10142
+    }
+  ],
+  "coverage": {
+    "tournaments": 21,
+    "first_year": 1930,
+    "last_year": 2018,
+    "years": [
+      1930,
+      1934,
+      1938,
+      1950,
+      1954,
+      1958,
+      1962,
+      1966,
+      1970,
+      1974,
+      1978,
+      1982,
+      1986,
+      1990,
+      1994,
+      1998,
+      2002,
+      2006,
+      2010,
+      2014,
+      2018
+    ],
+    "matches": 900,
+    "goals": 2548,
+    "own_goals": 52,
+    "players_in_squads": 7907,
+    "players_rows": 7907,
+    "players_who_appeared_1970_on": 4627,
+    "goal_scorers": 1297,
+    "referees": 380,
+    "managers": 357,
+    "stadiums": 185,
+    "teams": 84,
+    "host_countries_distinct": 18,
+    "stadium_countries": 17,
+    "bookings": 2466,
+    "substitution_rows": 6464,
+    "substitutions": 3232,
+    "shootouts": 30,
+    "shootout_kicks": 279,
+    "event_coverage": {
+      "goals": "1930-2018 (21 of 21 tournaments)",
+      "bookings": "1970-2018 (13 of 21 tournaments)",
+      "substitutions": "1970-2018 (13 of 21 tournaments)",
+      "player_appearances": "1970-2018 (13 of 21 tournaments)",
+      "penalty_kicks": "1982-2018 (10 of 21 tournaments)",
+      "manager_appearances": "1930-2018 (21 of 21 tournaments)",
+      "referee_appearances": "1930-2018 (21 of 21 tournaments)",
+      "group_standings": "1930-2018 (19 of 21 tournaments)"
+    },
+    "start_date": "1930-07-13",
+    "end_date": "2018-07-15",
+    "matches_per_tournament": {
+      "1930": 18,
+      "1934": 17,
+      "1938": 18,
+      "1950": 22,
+      "1954": 26,
+      "1958": 35,
+      "1962": 32,
+      "1966": 32,
+      "1970": 32,
+      "1974": 38,
+      "1978": 38,
+      "1982": 52,
+      "1986": 52,
+      "1990": 52,
+      "1994": 52,
+      "1998": 64,
+      "2002": 64,
+      "2006": 64,
+      "2010": 64,
+      "2014": 64,
+      "2018": 64
+    }
+  },
+  "data_quality": {
+    "sentinels": {
+      "award_winners.given_name": 21,
+      "bookings.group_name": 695,
+      "bookings.given_name": 117,
+      "goals.group_name": 766,
+      "goals.given_name": 255,
+      "manager_appearances.group_name": 485,
+      "manager_appearances.given_name": 20,
+      "manager_appointments.given_name": 5,
+      "managers.given_name": 5,
+      "matches.group_name": 236,
+      "penalty_kicks.group_name": 279,
+      "penalty_kicks.given_name": 24,
+      "player_appearances.group_name": 4271,
+      "player_appearances.given_name": 1063,
+      "players.given_name": 371,
+      "players.birth_date": 77,
+      "players.player_wikipedia_link": 7,
+      "referee_appearances.group_name": 236,
+      "referees.referee_wikipedia_link": 87,
+      "squads.given_name": 508,
+      "substitutions.group_name": 1502,
+      "substitutions.given_name": 389,
+      "team_appearances.group_name": 472
+    },
+    "true_nulls": {
+      "players.birth_date": 1
+    },
+    "null_birth_player": [
+      [
+        "P-03300",
+        "Sepúlveda",
+        "Guillermo"
+      ]
+    ],
+    "score_hyphen_rows": [
+      [
+        "M-1970-18",
+        "Sweden v Uruguay",
+        "1-0"
+      ]
+    ],
+    "score_penalties_no_shootout": {
+      "0-0": 870
+    },
+    "host_performance_labels": {
+      "champions": 6,
+      "quater-finals": 4,
+      "third place": 3,
+      "runners-up": 2,
+      "round of 16": 2,
+      "fourth place": 2,
+      "quarter-final": 1,
+      "second group stage": 1,
+      "group stage": 1
+    },
+    "qualified_performance_labels": {
+      "group stage": 206,
+      "round of 16": 87,
+      "quarter-finals": 64,
+      "final": 40,
+      "third-place match": 38,
+      "second group stage": 16,
+      "final round": 4,
+      "semi-finals": 2
+    },
+    "duplicate_team_codes": [
+      [
+        "T-29",
+        "Germany",
+        "DEU"
+      ],
+      [
+        "T-82",
+        "West Germany",
+        "DEU"
+      ]
+    ],
+    "duplicate_stadium_names": [
+      [
+        "S-053",
+        "Olympiastadion",
+        "Berlin"
+      ],
+      [
+        "S-065",
+        "Olympiastadion",
+        "Munich"
+      ]
+    ],
+    "match_name_distinct": 711,
+    "replays": [
+      [
+        "M-1934-12",
+        "Italy v Spain",
+        "quarter-finals",
+        "1–1",
+        1,
+        0
+      ],
+      [
+        "M-1934-13",
+        "Italy v Spain",
+        "quarter-finals",
+        "1–0",
+        0,
+        1
+      ],
+      [
+        "M-1938-01",
+        "Switzerland v Germany",
+        "round of 16",
+        "1–1",
+        1,
+        0
+      ],
+      [
+        "M-1938-02",
+        "Cuba v Romania",
+        "round of 16",
+        "3–3",
+        1,
+        0
+      ],
+      [
+        "M-1938-08",
+        "Cuba v Romania",
+        "round of 16",
+        "2–1",
+        0,
+        1
+      ],
+      [
+        "M-1938-09",
+        "Switzerland v Germany",
+        "round of 16",
+        "4–2",
+        0,
+        1
+      ],
+      [
+        "M-1938-10",
+        "Brazil v Czechoslovakia",
+        "quarter-finals",
+        "1–1",
+        1,
+        0
+      ],
+      [
+        "M-1938-14",
+        "Brazil v Czechoslovakia",
+        "quarter-finals",
+        "2–1",
+        0,
+        1
+      ]
+    ],
+    "walkovers": [
+      [
+        "WC-1938",
+        "round of 16",
+        8,
+        9,
+        2,
+        1
+      ]
+    ],
+    "playoffs": [
+      [
+        "WC-1954",
+        "group stage",
+        2
+      ],
+      [
+        "WC-1958",
+        "group stage",
+        3
+      ]
+    ],
+    "shootout_result_labels": {
+      "home team win": 18,
+      "away team win": 12
+    },
+    "shootout_level_scores": 30,
+    "extra_time_matches": 68,
+    "final_stage_matches": 20,
+    "final_round_1950": [
+      [
+        "M-1950-17",
+        "Brazil v Sweden",
+        "7–1"
+      ],
+      [
+        "M-1950-18",
+        "Uruguay v Spain",
+        "2–2"
+      ],
+      [
+        "M-1950-19",
+        "Brazil v Spain",
+        "6–1"
+      ],
+      [
+        "M-1950-20",
+        "Uruguay v Sweden",
+        "3–2"
+      ],
+      [
+        "M-1950-21",
+        "Sweden v Spain",
+        "3–1"
+      ],
+      [
+        "M-1950-22",
+        "Uruguay v Brazil",
+        "2–1"
+      ]
+    ],
+    "third_place_matches": 19,
+    "no_third_place_match": [
+      1930,
+      1950
+    ],
+    "standings_positions_per_tournament": {
+      "[1, 2, 3, 4]": 21
+    },
+    "tournaments_without_groups": [
+      "WC-1934",
+      "WC-1938"
+    ],
+    "goal_reconciliation_mismatches": 0,
+    "goals_sum_of_scores": 2548,
+    "shootout_reconciliation_mismatches": 0,
+    "own_goal_team_differs": "52 of 52",
+    "non_own_goal_team_differs": 0,
+    "team_appearances_per_match": {
+      "2": 900
+    },
+    "stage_count_mismatches": 0,
+    "team_count_mismatches": 0,
+    "starters_per_team_match": {
+      "11": 1400
+    },
+    "team_matches_without_captain": [
+      [
+        "M-1974-05",
+        "Sweden"
+      ],
+      [
+        "M-1974-13",
+        "Uruguay"
+      ],
+      [
+        "M-1974-22",
+        "Uruguay"
+      ],
+      [
+        "M-1974-26",
+        "Brazil"
+      ],
+      [
+        "M-1974-29",
+        "Brazil"
+      ],
+      [
+        "M-1974-35",
+        "Brazil"
+      ],
+      [
+        "M-1974-37",
+        "Brazil"
+      ],
+      [
+        "M-1974-37",
+        "Poland"
+      ],
+      [
+        "M-1978-22",
+        "Sweden"
+      ]
+    ],
+    "coming_on_without_appearance": [
+      [
+        "S-0276",
+        "M-1974-14",
+        "Netherlands v Sweden",
+        "Grip"
+      ],
+      [
+        "S-0332",
+        "M-1974-22",
+        "Sweden v Uruguay",
+        "Ahlström"
+      ],
+      [
+        "S-0334",
+        "M-1974-22",
+        "Sweden v Uruguay",
+        "Torstensson"
+      ],
+      [
+        "S-0336",
+        "M-1974-23",
+        "Argentina v Haiti",
+        "Leandré"
+      ],
+      [
+        "S-0339",
+        "M-1974-23",
+        "Argentina v Haiti",
+        "Balbuena"
+      ],
+      [
+        "S-0340",
+        "M-1974-23",
+        "Argentina v Haiti",
+        "Leandré"
+      ],
+      [
+        "S-0342",
+        "M-1974-23",
+        "Argentina v Haiti",
+        "Brindisi"
+      ],
+      [
+        "S-0712",
+        "M-1982-10",
+        "Chile v Austria",
+        "Baumeister"
+      ],
+      [
+        "S-0714",
+        "M-1982-10",
+        "Chile v Austria",
+        "Jurtin"
+      ]
+    ],
+    "pa_substitute_rows": 3223,
+    "coming_on_rows": 3232,
+    "subbed_on_then_off": 16,
+    "sub_pairs_unbalanced": 0,
+    "max_subs_team_match": 4,
+    "sub_rows_flag_pattern": {
+      "(1, 0)": 3232,
+      "(0, 1)": 3232
+    },
+    "booking_flag_patterns": {
+      "(1, 0, 0, 0)": 2318,
+      "(0, 1, 0, 1)": 88,
+      "(1, 0, 1, 1)": 59,
+      "(1, 1, 0, 1)": 1
+    },
+    "booking_yellow_and_red": [
+      [
+        "B-0353",
+        "Iraq v Belgium",
+        "Gorgis",
+        "Basil",
+        "52'"
+      ]
+    ],
+    "booked_matches_per_tournament": {
+      "1970": 19,
+      "1974": 33,
+      "1978": 20,
+      "1982": 43,
+      "1986": 47,
+      "1990": 48,
+      "1994": 52,
+      "1998": 64,
+      "2002": 62,
+      "2006": 64,
+      "2010": 62,
+      "2014": 64,
+      "2018": 62
+    },
+    "team_tournaments_multiple_managers": 12,
+    "team_matches_multiple_managers": 42,
+    "player_position_flag_counts": {
+      "1": 7720,
+      "2": 186,
+      "3": 1
+    },
+    "players_multiple_teams": 34,
+    "players_multiple_teams_examples": [
+      "Argentina -> Italy",
+      "Austria -> Germany",
+      "Brazil -> Italy",
+      "Hungary -> Spain",
+      "Serbia and Montenegro -> Serbia",
+      "Soviet Union -> Russia",
+      "Uruguay -> Spain",
+      "West Germany -> Germany",
+      "Yugoslavia -> Croatia",
+      "Yugoslavia -> Serbia and Montenegro",
+      "Yugoslavia -> Serbia and Montenegro -> Serbia"
+    ],
+    "count_tournaments_mismatch": 0,
+    "shirt_zero_squads_by_year": {
+      "1930": 245,
+      "1934": 342,
+      "1938": 320,
+      "1950": 281
+    },
+    "shirt_zero_goals_by_year": {
+      "1930": 70,
+      "1934": 70,
+      "1938": 84,
+      "1950": 88,
+      "1954": 140,
+      "1958": 126,
+      "1962": 89,
+      "1966": 89
+    },
+    "pa_position_codes": {
+      "MF": 3658,
+      "DF": 2713,
+      "FW": 2684,
+      "CB": 1743,
+      "CM": 1492,
+      "GK": 1425,
+      "CF": 1091,
+      "RB": 656,
+      "LB": 656,
+      "RM": 401,
+      "LM": 399,
+      "AM": 379,
+      "LW": 311,
+      "RW": 304,
+      "DM": 218,
+      "SW": 138,
+      "SS": 78,
+      "LF": 74,
+      "RF": 74,
+      "LWB": 65,
+      "RWB": 64
+    },
+    "squad_position_codes": {
+      "MF": 3097,
+      "DF": 3081,
+      "FW": 2661,
+      "GK": 1303
+    },
+    "birth_date_range": [
+      "1892-05-09",
+      "1999-01-04"
+    ],
+    "points_2_per_win_holds_to_1990": true,
+    "points_3_per_win_holds_from_1994": true,
+    "standings_played_eq_wdl": true,
+    "standings_gd_ok": true,
+    "stage_name_mismatches": [
+      [
+        "WC-1950",
+        1,
+        "first round",
+        "group stage"
+      ],
+      [
+        "WC-1974",
+        1,
+        "first group stage",
+        "group stage"
+      ],
+      [
+        "WC-1978",
+        1,
+        "first group stage",
+        "group stage"
+      ],
+      [
+        "WC-1982",
+        1,
+        "first group stage",
+        "group stage"
+      ]
+    ],
+    "match_group_names_not_in_groups": [
+      [
+        "WC-1982",
+        2,
+        "Group 4"
+      ],
+      [
+        "WC-1982",
+        2,
+        "Group 1"
+      ],
+      [
+        "WC-1982",
+        2,
+        "Group 3"
+      ],
+      [
+        "WC-1982",
+        2,
+        "Group 2"
+      ]
+    ],
+    "group_stage_matches_without_group": [
+      [
+        "M-1950-17",
+        "final round"
+      ],
+      [
+        "M-1950-18",
+        "final round"
+      ],
+      [
+        "M-1950-19",
+        "final round"
+      ],
+      [
+        "M-1950-20",
+        "final round"
+      ],
+      [
+        "M-1950-21",
+        "final round"
+      ],
+      [
+        "M-1950-22",
+        "final round"
+      ]
+    ],
+    "groups_names_for_those_stages": [
+      "Group A",
+      "Group B",
+      "Group C",
+      "Group D"
+    ],
+    "standings_played_vs_group_matches": [
+      [
+        "WC-1954",
+        "group stage",
+        "West Germany",
+        2,
+        3
+      ],
+      [
+        "WC-1954",
+        "group stage",
+        "Turkey",
+        2,
+        3
+      ],
+      [
+        "WC-1954",
+        "group stage",
+        "Switzerland",
+        2,
+        3
+      ],
+      [
+        "WC-1954",
+        "group stage",
+        "Italy",
+        2,
+        3
+      ],
+      [
+        "WC-1958",
+        "group stage",
+        "Northern Ireland",
+        3,
+        4
+      ],
+      [
+        "WC-1958",
+        "group stage",
+        "Czechoslovakia",
+        3,
+        4
+      ],
+      [
+        "WC-1958",
+        "group stage",
+        "Wales",
+        3,
+        4
+      ],
+      [
+        "WC-1958",
+        "group stage",
+        "Hungary",
+        3,
+        4
+      ],
+      [
+        "WC-1958",
+        "group stage",
+        "Soviet Union",
+        3,
+        4
+      ],
+      [
+        "WC-1958",
+        "group stage",
+        "England",
+        3,
+        4
+      ]
+    ],
+    "region_vs_confederation": [
+      [
+        "Australia",
+        "Oceania",
+        "AFC"
+      ],
+      [
+        "Israel",
+        "Middle East",
+        "UEFA"
+      ]
+    ],
+    "denormalised_copy_differences": 0,
+    "denormalised_copy_checks": 40,
+    "match_stadium_location_mismatch": 0,
+    "host_matches": 118,
+    "host_matches_flagged_home": 87
+  },
+  "insights": [
+    {
+      "theme": "Team performance",
+      "text": "Titles by team_id: Brazil 5, Italy 4, West Germany 3, Uruguay 2, Argentina 2, France 2, England 1, Spain 1, Germany 1. 9 different team_ids have won, but Germany and West Germany share the code DEU; counted as one lineage they have 4 titles, level with Italy's 4 and behind Brazil's 5.",
+      "support": "tournament_standings (position = 1), teams.team_code"
+    },
+    {
+      "theme": "Team performance",
+      "text": "Brazil is the only team to appear in all 21 tournaments; next are Italy (18), Argentina (17), Mexico (16). 84 teams have taken part in total.",
+      "support": "qualified_teams"
+    },
+    {
+      "theme": "Goals and scoring",
+      "text": "Goals per match peaked at 5.38 in 1954 and bottomed at 2.21 in 1990; the all-time average is 2.83. Every tournament since 1962 has averaged under 3 goals per match (range 2.21-2.97).",
+      "support": "matches.home_team_score, away_team_score"
+    },
+    {
+      "theme": "Goals and scoring",
+      "text": "The biggest winning margin is 9 goals, reached 3 times: Hungary 9-0 South Korea (1954); Yugoslavia 9-0 Zaire (1974); Hungary 10-1 El Salvador (1982).",
+      "support": "matches.home_team_score_margin"
+    },
+    {
+      "theme": "Goals and scoring",
+      "text": "The highest-scoring match is Austria 7-5 Switzerland (1954, quarter-finals), 12 goals. 71 matches (7.9%) ended 0-0.",
+      "support": "matches"
+    },
+    {
+      "theme": "Player performance",
+      "text": "All-time top scorers (own goals excluded): Miroslav Klose 16, Ronaldo 15, Gerd Müller 14, Just Fontaine 13, Pelé 12. 1297 different players have scored.",
+      "support": "goals (own_goal = 0), players"
+    },
+    {
+      "theme": "Player performance",
+      "text": "Most goals in one tournament: Just Fontaine, 13 in 1958. The next best single-tournament tally is 11 (Sándor Kocsis, 1954).",
+      "support": "goals grouped by tournament_id, player_id"
+    },
+    {
+      "theme": "Player performance",
+      "text": "There have been 52 hat-tricks (3+ goals by one player in a match, own goals excluded). The most goals by one player in one match is 5 (Oleg Salenko, Russia v Cameroon, 1994).",
+      "support": "goals grouped by match_id, player_id"
+    },
+    {
+      "theme": "Goals and scoring",
+      "text": "52 own goals in total (2.0% of all goals). 2018 had the most, 12, more than the 6 of the next highest tournament.",
+      "support": "goals.own_goal, team_id vs player_team_id"
+    },
+    {
+      "theme": "Goals and scoring",
+      "text": "197 goals came from in-match penalties (7.7%). The record is 22 in 2018 (the first tournament with VAR); the previous high was 17.",
+      "support": "goals.penalty"
+    },
+    {
+      "theme": "Goals and scoring",
+      "text": "30 matches were settled by a shoot-out (1982-2018); 196 of 279 kicks were scored (70.3%). Most shoot-out wins: Argentina 4/5. Unbeaten with 3+: West Germany 3/3 (with Germany's 2006 shoot-out the DEU lineage is 4/4); England won 1/4.",
+      "support": "penalty_kicks.converted, team_appearances.penalties_for/against"
+    },
+    {
+      "theme": "Goals and scoring",
+      "text": "68 matches went to extra time and 30 of those ended in a shoot-out (44%).",
+      "support": "matches.extra_time, penalty_shootout"
+    },
+    {
+      "theme": "Venues and hosting",
+      "text": "Hosts won 6 of 21 tournaments (1930, 1934, 1966, 1974, 1978, 1998), none since 1998. Host nations won 62.7% of their 118 matches versus 37.3% for all other teams (shoot-outs counted as draws).",
+      "support": "tournaments.host_won, host_countries, team_appearances"
+    },
+    {
+      "theme": "Venues and hosting",
+      "text": "Only 1 host was eliminated in the first group stage: South Africa (2010).",
+      "support": "host_countries.performance"
+    },
+    {
+      "theme": "Team performance",
+      "text": "Only two confederations have produced champions: {'UEFA': 12, 'CONMEBOL': 9}. Top-four finishes by teams from other confederations: United States 1930 (position 3), South Korea 2002 (position 4).",
+      "support": "tournament_standings, teams.confederation_code"
+    },
+    {
+      "theme": "Historical trends",
+      "text": "The draw rate (level score, shoot-outs counted as draws) was 22.1% overall, from 0.0% in 1930 to 32.7% in 1982.",
+      "support": "matches.home_team_score, away_team_score"
+    },
+    {
+      "theme": "Discipline and refereeing",
+      "text": "Cards per match rose from 1.62 in 1970 to a peak of 5.52 in 2006, then fell to 3.52 in 2018. 2466 card events are recorded in total.",
+      "support": "bookings, matches"
+    },
+    {
+      "theme": "Discipline and refereeing",
+      "text": "The most cards in one match: Portugal v Netherlands (2006, round of 16) with 16 cards including 4 sendings-off.",
+      "support": "bookings grouped by match_id"
+    },
+    {
+      "theme": "Discipline and refereeing",
+      "text": "148 sendings-off from 1970 to 2018 (89 straight reds, 59 after a second yellow). The most in one tournament was 27 in 2006.",
+      "support": "bookings.sending_off, red_card, second_yellow_card"
+    },
+    {
+      "theme": "Discipline and refereeing",
+      "text": "Ravshan Irmatov (Uzbekistan) refereed the most matches, 11. UEFA referees officiated 516 of 900 matches (57%).",
+      "support": "referee_appearances, referees"
+    },
+    {
+      "theme": "Discipline and refereeing",
+      "text": "Among referees with at least 5 matches since 1970, Ľuboš Micheľ (Slovakia) showed the most cards per match (8.00); the median for this group is 3.94.",
+      "support": "bookings joined to referee_appearances on match_id"
+    },
+    {
+      "theme": "Venues and hosting",
+      "text": "Estadio Azteca (Mexico City) has hosted the most matches, 19. The largest listed capacity is Estádio do Maracanã (Rio de Janeiro) at 200,000. 185 stadiums in 17 countries have been used.",
+      "support": "matches.stadium_id, stadiums"
+    },
+    {
+      "theme": "Managers",
+      "text": "Helmut Schön (West Germany) holds both manager records: most matches (25) and most wins (16, shoot-outs counted as draws). Next by wins: Luiz Felipe Scolari (14 wins in 21 matches).",
+      "support": "manager_appearances joined to team_appearances"
+    },
+    {
+      "theme": "Managers",
+      "text": "138 of 469 manager appointments (29%) were of a manager whose nationality differs from the team's name. Every one of the 21 title-winning managers shared the nationality of their team (West German winners are listed with nationality Germany).",
+      "support": "manager_appointments.country_name, teams.team_name, tournament_standings"
+    },
+    {
+      "theme": "Player performance",
+      "text": "Most World Cup appearances (1970 onwards): Lothar Matthäus, 25 matches; then Miroslav Klose 24, Paolo Maldini 23, Diego Maradona 21.",
+      "support": "player_appearances"
+    },
+    {
+      "theme": "Player performance",
+      "text": "4 players were in a squad at 5 tournaments: Gianluigi Buffon (1998, 2002, 2006, 2010, 2014); Antonio Carbajal (1950, 1954, 1958, 1962, 1966); Rafael Márquez (2002, 2006, 2010, 2014, 2018); Lothar Matthäus (1982, 1986, 1990, 1994, 1998).",
+      "support": "players.count_tournaments, list_tournaments (verified against squads)"
+    },
+    {
+      "theme": "Player performance",
+      "text": "Since 1970, 196 of 1749 non-own goals (11.2%) were scored by substitutes; the count rose from 5 in 1970 to a peak of 32 in 2014 (15 in 2018).",
+      "support": "goals joined to player_appearances (substitute = 1)"
+    },
+    {
+      "theme": "Player performance",
+      "text": "Oldest scorer: Roger Milla aged 42 years 39 days (Russia v Cameroon, 1994). Youngest scorer: Pelé aged 17 years 239 days (Brazil v Wales, 1958).",
+      "support": "goals.match_date, players.birth_date"
+    },
+    {
+      "theme": "Player performance",
+      "text": "From 1970 on, the oldest player to appear is Essam El Hadary (45 years 161 days, Saudi Arabia v Egypt, 2018); the youngest is Norman Whiteside (17 years 41 days, Yugoslavia v Northern Ireland, 1982).",
+      "support": "player_appearances.match_date, players.birth_date"
+    },
+    {
+      "theme": "Historical trends",
+      "text": "Average squad age at the tournament start rose from 24.9 years in 1930 (the lowest) to 27.9 in 2018 (the highest); in 1970 it was 26.2. Birth dates are missing for 79 squad rows.",
+      "support": "squads, players.birth_date, tournaments.start_date"
+    },
+    {
+      "theme": "Awards",
+      "text": "The Golden Boot has been shared in 2 tournaments; the largest tie was 6 players in 1962. Of 132 award rows, 38 are shared awards.",
+      "support": "award_winners.shared, award_name"
+    },
+    {
+      "theme": "Awards",
+      "text": "Golden Ball (best player, recorded since 1978): only 4 of 11 winners played for the champion team.",
+      "support": "award_winners joined to tournament_standings"
+    },
+    {
+      "theme": "Goals and scoring",
+      "text": "1403 goals (55.1%) came in the second half versus 1078 (42.3%) in the first; 537 (21.1%) came in minutes 76-90 including stoppage time.",
+      "support": "goals.match_period, minute_regulation"
+    },
+    {
+      "theme": "Team performance",
+      "text": "20 teams have never won a World Cup match (shoot-outs counted as draws); the most matches without a win is 9 by Honduras.",
+      "support": "team_appearances"
+    },
+    {
+      "theme": "Team performance",
+      "text": "28 of 84 teams never got past the first group stage (performance always 'group stage').",
+      "support": "qualified_teams.performance"
+    },
+    {
+      "theme": "Historical trends",
+      "text": "Group points follow 2 points per win in every tournament up to 1990 and 3 points per win from 1994, which the data reproduces exactly (checks: True / True). Points therefore cannot be compared across eras without recomputing.",
+      "support": "group_standings.points, wins, draws"
+    }
+  ]
+}
